@@ -1,11 +1,29 @@
-export default function Player({ name, symbol }) {
+import { useState } from 'react'
+
+export default function Player({ initialName, symbol, isActive }) {
+  const [playerName, setPlayerName] = useState(initialName)
+  const [isEditMode, setIsEditMode] = useState(false)
+
+  const onClickHandler = () => {
+    setIsEditMode(editing => !editing)
+  }
+  const onChangeHandler = e => {
+    setPlayerName(e.target.value)
+  }
+
+  let player = isEditMode ? (
+    <input onChange={onChangeHandler} type="text" value={playerName} />
+  ) : (
+    <span className="player-name">{playerName}</span>
+  )
+
   return (
-    <li>
+    <li className={isActive ? 'active' : ''}>
       <span className="player">
-        <span className="player-name">{name}</span>
+        {player}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button>Edit</button>
+      <button onClick={onClickHandler}>{isEditMode ? 'Save' : 'Edit'}</button>
     </li>
   )
 }
